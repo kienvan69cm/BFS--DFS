@@ -36,9 +36,11 @@ def BFS():
 
 def TraversalDraw():
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+    index = 0
     for i in graph:
         if visited[i] == True:
-            drawFilledCircle(i[0], i[1])
+            drawHollowCircle(i[0], i[1], index)
+            index += 1
     for i in graph:
         if visited[i] == True and graph[i]:
             for endpoint in graph[i]:
@@ -48,8 +50,12 @@ def TraversalDraw():
 
 
 def draw():
+    index = 0
     for pos in graph:
-        drawHollowCircle(pos[0], pos[1])
+        drawHollowCircle(pos[0], pos[1], index)
+        index += 1
+        # textsurface = myfont.render('0', False, (0, 0, 255))
+        # screen.blit(textsurface, dest=(pos[0], pos[1]))
     for node in graph:
         if(graph[node]):
             for endPoint in graph[node]:
@@ -58,7 +64,8 @@ def draw():
 
 def main():
     pygame.init()
-    display = (WIDTH, HEIGHT)  # the pygame windows resolution
+    pygame.font.init()
+    display = (WIDTH, HEIGHT)
     pygame.display.set_mode(display, DOUBLEBUF | OPENGL)
     gluOrtho2D(0, WIDTH, HEIGHT, 0)
 
@@ -66,13 +73,12 @@ def main():
     mode = "view-only"
     print("current mode is "+mode)
     print("key-bindings are")
-    print("i for insert, c for connect, d for disconnect, e for eliminate, a for DFS , b for BFS, any other key for view-only")
+    print("i: Thêm node, c: Thêm cạnh, d: Xóa cạnh, e: Xóa nốt, a: Duyệt DFS , b: Duyệt BFS, any other key for view-only")
 
     connections = 0
     conNode = None
     deletions = 0
     delNode = None
-
     while True:
 
         for event in pygame.event.get():
@@ -115,8 +121,6 @@ def main():
                             break
                     if(flag == 0):
                         graph[pos] = []
-                        print(graph)
-
                 elif event.button == 1 and mode == "connect":
                     pos = pygame.mouse.get_pos()
                     for node in graph:
@@ -124,11 +128,9 @@ def main():
                             connections += 1
                             if(connections == 1):
                                 conNode = node
-                                print('conNode', conNode)
                                 break
                             elif(connections == 2):
                                 if (node != conNode) and (not (node in graph[conNode])):
-                                    print('node', node)
                                     graph[conNode].append(node)
                                     graph[node].append(conNode)
                                 connections = 0
