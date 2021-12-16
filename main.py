@@ -35,11 +35,11 @@ def BFS():
 
 
 def TraversalDraw():
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+    #glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     index = 0
     for i in graph:
         if visited[i] == True:
-            drawHollowCircle(i[0], i[1], index)
+            drawFilledCircle(i[0], i[1])
             index += 1
     for i in graph:
         if visited[i] == True and graph[i]:

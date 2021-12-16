@@ -42,3 +42,15 @@ def drawHollowCircle(x, y, i, r=RAD):
             y + (r * math.sin(i * twoPi / lineAmount))
         )
     glEnd()
+
+
+def drawFilledCircle(x, y, r=RAD):
+    triangleAmount = 100
+    twoPi = math.pi * 2
+    glBegin(GL_TRIANGLE_FAN)
+    for i in range(triangleAmount):
+        glVertex2f(
+            x + (r * math.cos(i * twoPi / triangleAmount)),
+            y + (r * math.sin(i * twoPi / triangleAmount))
+        )
+    glEnd()
